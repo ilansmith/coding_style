@@ -164,10 +164,10 @@ input.</p>
 
 <h2 id="Header_Files">Header Files</h2>
 
-<p>In general, every <code>.cc</code> file should have an
+<p>In general, every <code>.cpp</code> file should have an
 associated <code>.h</code> file. There are some common
 exceptions, such as  unittests and
-small <code>.cc</code> files containing just a
+small <code>.cpp</code> files containing just a
 <code>main()</code> function.</p>
 
 <p>Correct use of header files can make a huge difference to
@@ -194,7 +194,7 @@ other headers it needs.</p>
 
 <p>Prefer placing the definitions for template and inline functions in
 the same file as their declarations.  The definitions of these
-constructs must be included into every <code>.cc</code> file that uses
+constructs must be included into every <code>.cpp</code> file that uses
 them, or the program may fail to link in some build configurations.  If
 declarations and definitions are in different files, including the
 former should transitively include the latter.  Do not move these
@@ -204,7 +204,7 @@ this practice was common in the past, but is no longer allowed.</p>
 <p>As an exception, a template that is explicitly instantiated for
 all relevant sets of template arguments, or that is a private
 implementation detail of a class, is allowed to be defined in the one
-and only <code>.cc</code> file that instantiates the template.</p>
+and only <code>.cpp</code> file that instantiates the template.</p>
 
 <p>There are rare cases where a file designed to be included is not
 self-contained.  These are typically intended to be included at unusual
@@ -300,7 +300,7 @@ function, or template without an associated definition.</p>
       struct B {};
       struct D : B {};
 
-      // good_user.cc:
+      // good_user.cpp:
       #include "b.h"
       void f(B*);
       void f(void*);
@@ -418,8 +418,8 @@ should be included as:</p>
 <pre>#include "base/logging.h"
 </pre>
 
-<p>In <code><var>dir/foo</var>.cc</code> or
-<code><var>dir/foo_test</var>.cc</code>, whose main
+<p>In <code><var>dir/foo</var>.cpp</code> or
+<code><var>dir/foo_test</var>.cpp</code>, whose main
 purpose is to implement or test the stuff in
 <code><var>dir2/foo2</var>.h</code>, order your includes
 as follows:</p>
@@ -441,15 +441,15 @@ as follows:</p>
 
 <p>With the preferred ordering, if
 <code><var>dir2/foo2</var>.h</code> omits any necessary
-includes, the build of <code><var>dir/foo</var>.cc</code>
-or <code><var>dir/foo</var>_test.cc</code> will break.
+includes, the build of <code><var>dir/foo</var>.cpp</code>
+or <code><var>dir/foo</var>_test.cpp</code> will break.
 Thus, this rule ensures that build breaks show up first
 for the people working on these files, not for innocent
 people in other packages.</p>
 
-<p><code><var>dir/foo</var>.cc</code> and
+<p><code><var>dir/foo</var>.cpp</code> and
 <code><var>dir2/foo2</var>.h</code> are usually in the same
-directory (e.g. <code>base/basictypes_test.cc</code> and
+directory (e.g. <code>base/basictypes_test.cpp</code> and
 <code>base/basictypes.h</code>), but may sometimes be in different
 directories too.</p>
 
@@ -467,12 +467,12 @@ don't count on the fact that you included <code>foo.h</code> which
 yourself, unless <code>foo.h</code> explicitly demonstrates its intent
 to provide you the symbols of <code>bar.h</code>.  However, any
 includes present in the related header do not need to be included
-again in the related <code>cc</code> (i.e., <code>foo.cc</code> can
+again in the related <code>cc</code> (i.e., <code>foo.cpp</code> can
 rely on <code>foo.h</code>'s includes).</p>
 
 <p>For example, the includes in
 
-<code>google-awesome-project/src/foo/internal/fooserver.cc</code>
+<code>google-awesome-project/src/foo/internal/fooserver.cpp</code>
 might look like this:</p>
 
 
@@ -603,7 +603,7 @@ class MyClass {
 }  // namespace mynamespace
 </pre>
 
-<pre>// In the .cc file
+<pre>// In the .cpp file
 namespace mynamespace {
 
 // Definition of functions is within scope of the namespace.
@@ -614,7 +614,7 @@ void MyClass::Foo() {
 }  // namespace mynamespace
 </pre>
 
-  <p>More complex <code>.cc</code> files might have additional details,
+  <p>More complex <code>.cpp</code> files might have additional details,
   like flags or using-declarations.</p>
 
 <pre>#include "a.h"
@@ -654,7 +654,7 @@ using namespace foo;
   in a header file becomes part of the public
   API exported by that file.</p>
 
-<pre>// Shorten access to some commonly used names in .cc files.
+<pre>// Shorten access to some commonly used names in .cpp files.
 namespace baz = ::foo::bar::baz;
 </pre>
 
@@ -681,7 +681,7 @@ inline void my_inline_function() {
 Variables</h3>
 
 <div class="summary">
-<p>When definitions in a <code>.cc</code> file do not need to be
+<p>When definitions in a <code>.cpp</code> file do not need to be
 referenced outside that file, place them in an unnamed
 namespace or declare them <code>static</code>. Do not use either
 of these constructs in <code>.h</code> files.
@@ -699,7 +699,7 @@ with the same name, then the two entities are completely independent.</p>
 
 <div class="decision">
 
-<p>Use of internal linkage in <code>.cc</code> files is encouraged
+<p>Use of internal linkage in <code>.cpp</code> files is encouraged
 for all code that does not need to be referenced elsewhere.
 Do not use internal linkage in <code>.h</code> files.</p>
 
@@ -765,7 +765,7 @@ class FooBar {
 </pre>
 
 <p>If you define a nonmember function and it is only
-needed in its <code>.cc</code> file, use
+needed in its <code>.cpp</code> file, use
 <a href="#Unnamed_Namespaces_and_Static_Variables">internal linkage</a> to limit
 its scope.</p>
 </div>
@@ -1542,7 +1542,7 @@ built-in operators. For example, use <code>|</code> as a
 bitwise- or logical-or, not as a shell-style pipe.</p>
 
 <p>Define operators only on your own types. More precisely,
-define them in the same headers, .cc files, and namespaces
+define them in the same headers, .cpp files, and namespaces
 as the types they operate on. That way, the operators are available
 wherever the type is, minimizing the risk of multiple
 definitions. If possible, avoid defining operators as templates,
@@ -3988,7 +3988,7 @@ using other_namespace::Foo;
 
   <p>Like other declarations, aliases declared in a header file are part of that
   header's public API unless they're in a function definition, in the private portion of a class,
-  or in an explicitly-marked internal namespace. Aliases in such areas or in .cc files are
+  or in an explicitly-marked internal namespace. Aliases in such areas or in .cpp files are
   implementation details (because client code can't refer to them), and are not restricted by this
   rule.</p>
 </div>
@@ -4053,9 +4053,9 @@ typedef unordered_set&lt;DataPoint, hash&lt;DataPoint&gt;, DataPointComparator&g
 </pre>
 
 <p>However, local convenience aliases are fine in function definitions, private sections of
-  classes, explicitly marked internal namespaces, and in .cc files:</p>
+  classes, explicitly marked internal namespaces, and in .cpp files:</p>
 
-<pre>// In a .cc file
+<pre>// In a .cpp file
 using std::unordered_set;
 </pre>
 
@@ -4134,13 +4134,13 @@ local pattern to follow, prefer "_".</p>
 <p>Examples of acceptable file names:</p>
 
 <ul>
-  <li><code>my_useful_class.cc</code></li>
-  <li><code>my-useful-class.cc</code></li>
-  <li><code>myusefulclass.cc</code></li>
-  <li><code>myusefulclass_test.cc // _unittest and _regtest are deprecated.</code></li>
+  <li><code>my_useful_class.cpp</code></li>
+  <li><code>my-useful-class.cpp</code></li>
+  <li><code>myusefulclass.cpp</code></li>
+  <li><code>myusefulclass_test.cpp // _unittest and _regtest are deprecated.</code></li>
 </ul>
 
-<p>C++ files should end in <code>.cc</code> and header files should end in
+<p>C++ files should end in <code>.cpp</code> and header files should end in
 <code>.h</code>. Files that rely on being textually included at specific points
 should end in <code>.inc</code> (see also the section on
 <a href="#Self_contained_Headers">self-contained headers</a>).</p>
@@ -4152,7 +4152,7 @@ should end in <code>.inc</code> (see also the section on
 example, use <code>http_server_logs.h</code> rather than
 <code>logs.h</code>. A very common case is to have a pair
 of files called, e.g., <code>foo_bar.h</code> and
-<code>foo_bar.cc</code>, defining a class called
+<code>foo_bar.cpp</code>, defining a class called
 <code>FooBar</code>.</p>
 
 <p>Inline functions must be in a <code>.h</code> file. If
@@ -4511,7 +4511,7 @@ documentation about individual abstractions belongs with those abstractions,
 not at the file level.</p>
 
 <p>Do not duplicate comments in both the <code>.h</code> and the
-<code>.cc</code>. Duplicated comments diverge.</p>
+<code>.cpp</code>. Duplicated comments diverge.</p>
 
 </div> 
 
@@ -4546,7 +4546,7 @@ surrounding multithreaded use.</p>
 <p>The class comment is often a good place for a small example code snippet
 demonstrating a simple and focused usage of the class.</p>
 
-<p>When sufficiently separated (e.g. <code>.h</code> and <code>.cc</code>
+<p>When sufficiently separated (e.g. <code>.h</code> and <code>.cpp</code>
 files), comments describing the use of the class should go together with its
 interface definition; comments about the class operation and implementation
 should accompany the implementation of the class's methods.</p>
@@ -6068,7 +6068,7 @@ style:</p>
 <ul>
   <li>Do not use Hungarian notation (for example, naming
   an integer <code>iNum</code>). Use the Google naming
-  conventions, including the <code>.cc</code> extension
+  conventions, including the <code>.cpp</code> extension
   for source files.</li>
 
   <li>Windows defines many of its own synonyms for
@@ -6127,7 +6127,7 @@ occasionally need to break on Windows:</p>
   file, typically with a name like <code>StdAfx.h</code>
   or <code>precompile.h</code>. To make your code easier
   to share with other projects, avoid including this file
-  explicitly (except in <code>precompile.cc</code>), and
+  explicitly (except in <code>precompile.cpp</code>), and
   use the <code>/FI</code> compiler option to include the
   file automatically.</li>
 
